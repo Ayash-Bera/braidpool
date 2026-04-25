@@ -69,3 +69,20 @@ def test_sarvam_raises_on_api_error(tmp_path):
             assert False, "should have raised"
         except RuntimeError as e:
             assert "401" in str(e)
+
+from unittest.mock import patch, MagicMock
+from eval.providers.genesis_kb import GenesisPipelineProvider
+
+def test_genesis_pipeline_provider_returns_string(tmp_path):
+    audio = tmp_path / "test.mp3"
+    audio.write_bytes(b"fake")
+    with patch("eval.providers.genesis_kb.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0, stdout="transcript output\n")
+        p = GenesisPipelineProvider(pipeline_dir=str(tmp_path))
+        # The provider reads a .txt file — create one so glob finds it
+        txt_file = tmp_path / "out.txt"
+        txt_file.write_text("transcript output")
+        with patch("eval.providers.genesis_kb.glob.glob", return_value=[str(txt_file)]):
+            result = p.transcribe(audio)
+    assert isinstance(result, str)
+    assert result == "transcript output"

@@ -5,6 +5,7 @@ from eval.video_list import VIDEOS
 from eval.providers.openai_stt import OpenAIProvider
 from eval.providers.gemini_stt import GeminiProvider
 from eval.providers.sarvam_stt import SarvamProvider
+from eval.providers.genesis_kb import GenesisPipelineProvider
 from eval.evaluator import evaluate_video
 from eval.csv_exporter import export_results
 
@@ -12,6 +13,7 @@ load_dotenv()
 
 def main():
     providers = [
+        GenesisPipelineProvider(),
         OpenAIProvider(api_key=os.environ["OPENAI_API_KEY"]),
         GeminiProvider(api_key=os.environ["GEMINI_API_KEY"]),
         SarvamProvider(api_key=os.environ["SARVAM_API_KEY"]),
