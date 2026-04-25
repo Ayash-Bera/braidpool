@@ -27,3 +27,19 @@ def test_openai_provider_calls_whisper(tmp_path):
     mock_client.audio.transcriptions.create.assert_called_once()
     _, kwargs = mock_client.audio.transcriptions.create.call_args
     assert kwargs["model"] == "whisper-1"
+
+from unittest.mock import patch, MagicMock
+from eval.providers.gemini_stt import GeminiProvider
+
+def test_gemini_provider_transcribes(tmp_path):
+    audio = tmp_path / "test.mp3"
+    audio.write_bytes(b"fake audio")
+    mock_response = MagicMock()
+    mock_response.text = "satoshi invented bitcoin"
+    with patch("eval.providers.gemini_stt.genai.GenerativeModel") as mock_model_cls:
+        mock_model = MagicMock()
+        mock_model_cls.return_value = mock_model
+        mock_model.generate_content.return_value = mock_response
+        p = GeminiProvider(api_key="fake-key")
+        result = p.transcribe(audio)
+    assert result == "satoshi invented bitcoin"
