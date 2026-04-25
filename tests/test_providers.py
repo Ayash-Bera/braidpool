@@ -43,3 +43,29 @@ def test_gemini_provider_transcribes(tmp_path):
         p = GeminiProvider(api_key="fake-key")
         result = p.transcribe(audio)
     assert result == "satoshi invented bitcoin"
+
+from eval.providers.sarvam_stt import SarvamProvider
+
+def test_sarvam_provider_transcribes(tmp_path):
+    audio = tmp_path / "test.mp3"
+    audio.write_bytes(b"fake audio")
+    fake_response = {"transcript": "hodl your bitcoin"}
+    with patch("eval.providers.sarvam_stt.requests.post") as mock_post:
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json.return_value = fake_response
+        p = SarvamProvider(api_key="fake-key")
+        result = p.transcribe(audio)
+    assert result == "hodl your bitcoin"
+
+def test_sarvam_raises_on_api_error(tmp_path):
+    audio = tmp_path / "test.mp3"
+    audio.write_bytes(b"fake audio")
+    with patch("eval.providers.sarvam_stt.requests.post") as mock_post:
+        mock_post.return_value.status_code = 401
+        mock_post.return_value.text = "Unauthorized"
+        p = SarvamProvider(api_key="bad-key")
+        try:
+            p.transcribe(audio)
+            assert False, "should have raised"
+        except RuntimeError as e:
+            assert "401" in str(e)
