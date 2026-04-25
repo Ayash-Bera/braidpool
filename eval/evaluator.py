@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 from eval.downloader import download_audio
 from eval.ground_truth import fetch_ground_truth
 from eval.correction import correct_transcript
@@ -8,7 +9,7 @@ from eval import metrics as m
 def evaluate_video(
     entry,
     providers: list,
-    anthropic_api_key: str,
+    anthropic_api_key: Optional[str],
     audio_dir: Path = Path("data/audio"),
     gt_cache_dir: Path = Path("data/ground_truth"),
 ) -> list[dict]:
@@ -17,8 +18,12 @@ def evaluate_video(
     results = []
     for provider in providers:
         raw = provider.transcribe(audio_path)
-        corrected = correct_transcript(raw, api_key=anthropic_api_key)
-        summary = summarize(corrected, api_key=anthropic_api_key)
+        if anthropic_api_key:
+            corrected = correct_transcript(raw, api_key=anthropic_api_key)
+            summary = summarize(corrected, api_key=anthropic_api_key)
+        else:
+            corrected = None
+            summary = None
         metric = m.compute(ground_truth, raw)
         results.append({
             "video_slug": entry.slug,
