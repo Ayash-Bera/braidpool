@@ -8,3 +8,5 @@ venv/
 vendor/
 *.bak
 ctranslate2_forced_translation.txt
+results/proposal*.md
+results/proposal*.pdf
