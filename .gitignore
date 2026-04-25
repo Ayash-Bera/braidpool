@@ -4,3 +4,7 @@ data/ground_truth/
 __pycache__/
 *.pyc
 .pytest_cache/
+venv/
+vendor/
+*.bak
+ctranslate2_forced_translation.txt

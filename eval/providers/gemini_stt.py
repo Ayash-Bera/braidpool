@@ -11,9 +11,9 @@ _MAX_RETRIES = 5
 
 class GeminiProvider(Provider):
     def __init__(self, api_key: str):
-        super().__init__(name="gemini-2.0-flash")
+        super().__init__(name="gemini-2.0-flash-lite")
         genai.configure(api_key=api_key)
-        self._model = genai.GenerativeModel("gemini-2.0-flash")
+        self._model = genai.GenerativeModel("gemini-2.0-flash-lite")
 
     def transcribe(self, audio_path: Path) -> str:
         audio_bytes = audio_path.read_bytes()

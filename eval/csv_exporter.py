@@ -11,6 +11,7 @@ COLUMNS = [
     "raw_transcript",
     "corrected_transcript",
     "summary",
+    "hindi_transcript",
     "wer",
     "cer",
     "audio_duration_seconds",
