@@ -23,7 +23,7 @@ This project builds a production pipeline that downloads Bitcoin conference audi
 
 The competency test deliverable is a working STT evaluation pipeline that runs on real Bitcoin 2025 conference audio and produces English transcripts, Hindi translations, and structured CSV output. I built providers for Sarvam (saarika:v2.5), Gemini (gemini-2.0-flash), and OpenAI Whisper-1, a WER/CER scoring module against bitcointranscripts.com ground truth, a Hindi translation step using Sarvam's mayura:v1 model, and an optional correction and summarization pass via LLM.
 
-**Source:** https://github.com/Ayash-Bera/graveyard/btc/i18n
+**Source:** https://github.com/Ayash-Bera/braidpool
 
 The pipeline ran successfully on Vivek Ramaswamy's 12-minute keynote from Bitcoin 2025, "Ending America's Crisis." Sarvam transcribed 729 seconds of audio into 10,693 characters of English text with no hallucinations. The translation step split that into 14 chunks and returned a complete Hindi translation. Bitcoin-domain terms came through correctly: "Bitcoin" as बिटकॉइन, "compound interest" as चक्रवृद्धि ब्याज, "self-custody" as स्व-संग्रहण.
 
