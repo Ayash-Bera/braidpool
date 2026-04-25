@@ -17,7 +17,11 @@ def evaluate_video(
     ground_truth = fetch_ground_truth(entry, cache_dir=gt_cache_dir)
     results = []
     for provider in providers:
-        raw = provider.transcribe(audio_path)
+        try:
+            raw = provider.transcribe(audio_path)
+        except Exception as e:
+            print(f"    [{provider.name}] transcription failed: {e}")
+            continue
         if anthropic_api_key:
             corrected = correct_transcript(raw, api_key=anthropic_api_key)
             summary = summarize(corrected, api_key=anthropic_api_key)

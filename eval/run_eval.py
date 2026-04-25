@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from eval.video_list import VIDEOS
-from eval.providers.genesis_kb import GenesisPipelineProvider
 from eval.evaluator import evaluate_video
 from eval.csv_exporter import export_results
 
@@ -10,7 +9,9 @@ load_dotenv()
 
 def _build_providers():
     providers = []
-    providers.append(GenesisPipelineProvider())
+    if os.getenv("GENESIS_KB_ENABLED"):
+        from eval.providers.genesis_kb import GenesisPipelineProvider
+        providers.append(GenesisPipelineProvider())
     if os.getenv("OPENAI_API_KEY"):
         from eval.providers.openai_stt import OpenAIProvider
         providers.append(OpenAIProvider(api_key=os.environ["OPENAI_API_KEY"]))
@@ -40,13 +41,16 @@ def main():
     all_rows = []
     for i, entry in enumerate(VIDEOS, 1):
         print(f"[{i}/{len(VIDEOS)}] {entry.slug}")
-        rows = evaluate_video(
-            entry,
-            providers=providers,
-            anthropic_api_key=anthropic_key,
-        )
-        all_rows.extend(rows)
-        print(f"  done — {len(rows)} rows")
+        try:
+            rows = evaluate_video(
+                entry,
+                providers=providers,
+                anthropic_api_key=anthropic_key,
+            )
+            all_rows.extend(rows)
+            print(f"  done — {len(rows)} rows")
+        except Exception as e:
+            print(f"  ERROR: {e}")
     out = Path("results/results.csv")
     export_results(all_rows, out)
     print(f"\nWrote {len(all_rows)} rows to {out}")
