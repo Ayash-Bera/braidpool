@@ -27,14 +27,20 @@ The competency test deliverable is a working STT evaluation pipeline that runs o
 
 The pipeline ran successfully on Vivek Ramaswamy's 12-minute keynote from Bitcoin 2025, "Ending America's Crisis." Sarvam transcribed 729 seconds of audio into 10,693 characters of English text with no hallucinations. The translation step split that into 14 chunks and returned a complete Hindi translation. Bitcoin-domain terms came through correctly: "Bitcoin" as बिटकॉइन, "compound interest" as चक्रवृद्धि ब्याज, "self-custody" as स्व-संग्रहण.
 
+**Results (live links):**
+
+- [English transcript — Vivek Ramaswamy, Bitcoin 2025 (10,693 chars, 729s)](https://github.com/Ayash-Bera/braidpool/blob/master/results/transcript_en.txt)
+- [Hindi translation — same talk, via Sarvam mayura:v1 (14 chunks)](https://github.com/Ayash-Bera/braidpool/blob/master/results/transcript_hi.txt)
+- [Full evaluation CSV — all columns including WER/CER fields](https://github.com/Ayash-Bera/braidpool/blob/master/results/results.csv)
+
 The output CSV row for that video:
 
 | Column | Value |
 |---|---|
 | video_slug | bitcoin-2025-vivek-ramaswamy |
 | provider | sarvam-stt-v2.5 |
-| raw_transcript | 10,693-character English transcript |
-| hindi_transcript | Full Hindi translation via mayura:v1 |
+| raw_transcript | [full English transcript](https://github.com/Ayash-Bera/braidpool/blob/master/results/transcript_en.txt) |
+| hindi_transcript | [full Hindi translation](https://github.com/Ayash-Bera/braidpool/blob/master/results/transcript_hi.txt) |
 | corrected_transcript | (populated when Anthropic key set) |
 | summary | (populated when Anthropic key set) |
 | wer | (auto-computed when bitcointranscripts.com publishes 2025 ground truth) |
