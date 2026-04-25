@@ -76,14 +76,13 @@ VIDEOS: list[VideoEntry] = [
         year=2025,
         gt_slug=None,
     ),
-    # Baltic Honeybadger 2025 — Riga, August 2025
-    # NOTE: Day 1 is a full-day livestream (~8h). Consider trimming with yt-dlp --download-sections.
+    # Bitcoin MENA 2025
     VideoEntry(
-        slug="bh-2025-day1-livestream",
-        youtube_url="https://www.youtube.com/watch?v=W2TJuQ1TWYs",
-        title="Day 1 Livestream",
-        speaker="Various",
-        conference="Baltic Honeybadger 2025",
+        slug="bitcoin-mena-2025-saylor-keynote",
+        youtube_url="https://www.youtube.com/watch?v=rQMFrpUFcNM",
+        title="Michael Saylor Keynote",
+        speaker="Michael Saylor",
+        conference="Bitcoin MENA 2025",
         year=2025,
         gt_slug=None,
     ),
