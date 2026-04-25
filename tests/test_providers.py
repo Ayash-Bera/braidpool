@@ -49,8 +49,11 @@ from eval.providers.sarvam_stt import SarvamProvider
 def test_sarvam_provider_transcribes(tmp_path):
     audio = tmp_path / "test.mp3"
     audio.write_bytes(b"fake audio")
+    fake_chunk = tmp_path / "chunk_0000.mp3"
+    fake_chunk.write_bytes(b"fake chunk")
     fake_response = {"transcript": "hodl your bitcoin"}
-    with patch("eval.providers.sarvam_stt.requests.post") as mock_post:
+    with patch("eval.providers.sarvam_stt._split_audio", return_value=[fake_chunk]), \
+         patch("eval.providers.sarvam_stt.requests.post") as mock_post:
         mock_post.return_value.status_code = 200
         mock_post.return_value.json.return_value = fake_response
         p = SarvamProvider(api_key="fake-key")
@@ -60,7 +63,10 @@ def test_sarvam_provider_transcribes(tmp_path):
 def test_sarvam_raises_on_api_error(tmp_path):
     audio = tmp_path / "test.mp3"
     audio.write_bytes(b"fake audio")
-    with patch("eval.providers.sarvam_stt.requests.post") as mock_post:
+    fake_chunk = tmp_path / "chunk_0000.mp3"
+    fake_chunk.write_bytes(b"fake chunk")
+    with patch("eval.providers.sarvam_stt._split_audio", return_value=[fake_chunk]), \
+         patch("eval.providers.sarvam_stt.requests.post") as mock_post:
         mock_post.return_value.status_code = 401
         mock_post.return_value.text = "Unauthorized"
         p = SarvamProvider(api_key="bad-key")
