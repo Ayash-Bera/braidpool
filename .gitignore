@@ -1,0 +1,6 @@
+.env
+data/audio/
+data/ground_truth/
+__pycache__/
+*.pyc
+.pytest_cache/
